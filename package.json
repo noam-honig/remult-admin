@@ -1,7 +1,13 @@
 {
-  "name": "react-vite-express-starter",
-  "private": true,
-  "version": "0.0.3",
+  "name": "remult-admin",
+  "version": "0.0.0",
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "Noam Honig",
+      "email": "noam.honig@gmail.com"
+    }
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && tsc -p tsconfig.lib.json && tsx src/misc/build.ts",

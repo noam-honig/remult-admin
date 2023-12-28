@@ -2,6 +2,8 @@
 
 A basic admin console to view [remult](https://remult.dev) entities.
 
+[live demo](https://codesandbox.io/p/devbox/demo-remult-admin-rpfz72?file=%2Findex.ts)
+
 ## Usage
 
 Express example:

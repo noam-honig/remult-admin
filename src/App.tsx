@@ -1,33 +1,72 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useEffect, useMemo, useState } from "react"
+import {
+  Entity,
+  EntityOrderBy,
+  ErrorInfo,
+  Fields,
+  Repository,
+  repo,
+} from "remult"
+import { Table } from "./components/table"
+import { EntityUIInfo } from "./entity-browser/entity-info"
+
+declare const entities: EntityUIInfo[]
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [tables, setTables] =
+    useState<(EntityUIInfo & { repo: Repository<any> })[]>()
+  useEffect(() => {
+    function setIt(myEntities: EntityUIInfo[]) {
+      setTables(
+        myEntities.map((info) => {
+          class C {}
+          for (const f of info.fields) {
+            Fields.string()(C.prototype, f.key)
+          }
+          Entity(info.caption, { allowApiCrud: true })(C)
+          return {
+            ...info,
+            repo: repo(C),
+          }
+        })
+      )
+    }
+
+    if (import.meta.env.DEV) {
+      setIt([
+        {
+          key: "customers",
+          caption: "Customers",
+          fields: [
+            {
+              key: "id",
+              caption: "Id",
+            },
+            {
+              key: "name",
+              caption: "Name",
+            },
+            {
+              key: "city",
+              caption: "City",
+            },
+          ],
+        },
+      ])
+    } else {
+      setIt(entities)
+    }
+  }, [])
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+    <>
+      {tables?.map((table) => (
+        <div key={table.key}>
+          <h3>{table.caption}</h3>
+          <Table columns={table.fields} repo={table.repo} />
+        </div>
+      ))}
+    </>
   )
 }
 

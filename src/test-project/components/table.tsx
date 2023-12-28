@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ErrorInfo, EntityOrderBy, Repository } from 'remult'
+import { ErrorInfo, EntityOrderBy, Repository, FindOptions } from 'remult'
 import { FieldUIInfo } from '../../lib/entity-info'
 
 export function Table({
@@ -10,22 +10,24 @@ export function Table({
   repo: Repository<any>
 }) {
   const [items, setItems] = useState<any[]>()
-  const [orderBy, setOrderBy] = useState<EntityOrderBy<any>>({})
+
   const [newRow, setNewRow] = useState()
+  const [options, setOptions] = useState<FindOptions<any>>({
+    limit: 25,
+    page: 1,
+  })
   useEffect(
     () =>
-      repo
-        .liveQuery({ orderBy, limit: 25 })
-        .subscribe((info) => setItems(info.applyChanges)),
-    [orderBy, columns]
+      repo.liveQuery(options).subscribe((info) => setItems(info.applyChanges)),
+    [options]
   )
 
   function toggleOrderBy(key: string) {
-    let dir = orderBy[key]
+    let dir = options.orderBy?.[key]
     if (dir === undefined) dir = 'asc'
     else if (dir === 'asc') dir = 'desc'
     else dir = undefined
-    setOrderBy({ [key]: dir })
+    setOptions({ ...options, orderBy: { [key]: dir } })
   }
 
   return (
@@ -70,6 +72,21 @@ export function Table({
           ))}
         </tbody>
       </table>
+      <button
+        onClick={() =>
+          setOptions({ ...options, page: (options.page || 1) - 1 })
+        }
+      >
+        {'<<'}{' '}
+      </button>{' '}
+      <span>{options.page}</span>{' '}
+      <button
+        onClick={() =>
+          setOptions({ ...options, page: (options.page || 1) + 1 })
+        }
+      >
+        {'>>'}{' '}
+      </button>
     </div>
   )
 }
@@ -88,7 +105,7 @@ function EditableRow({
   const [value, setValue] = useState(row)
   const [error, setError] = useState<ErrorInfo>()
   useEffect(() => {
-    setValue(value)
+    setValue(row)
   }, [row])
   const changed = useMemo(
     () => Boolean(columns.find((x) => value[x.key] != row[x.key])),
@@ -147,3 +164,10 @@ function EditableRow({
     </tr>
   )
 }
+//[ ] - allow filter
+
+//[ ] - respect allow api update,delete etc...
+//[ ] - respect respect allow api update on column level
+//[ ] - respect include in api false
+//[ ] - respect checkbox etc...
+//[ ] - support dialog for selection of things

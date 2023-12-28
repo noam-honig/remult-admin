@@ -54,3 +54,12 @@ function App() {
 }
 
 export default App
+//[ ] - route per entity
+//[ ] - select entity
+//[ ] - use your library
+//[ ] - column filtering
+//[ ] - serialize find options to uri
+//[ ] - support checkbox :)
+//[ ] - respect api update / delete /insert ruiles
+//[ ] - respect include in apu
+//[ ] - respect allow update for column

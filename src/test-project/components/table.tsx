@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { EntityOrderBy, Repository, FindOptions } from 'remult'
 import { FieldUIInfo } from '../../lib/entity-info'
 import { EditableRow } from './EditableRow'
+import Filter from './Filter'
 
 export function Table({
   columns,
@@ -48,6 +49,11 @@ export function Table({
       >
         {'>>'}{' '}
       </button>
+      <Filter
+        fields={columns}
+        filter={options.where}
+        setFilter={(where) => setOptions({ ...options, where })}
+      />
       <table>
         <thead>
           <tr>

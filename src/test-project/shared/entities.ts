@@ -1,24 +1,26 @@
-import { Entity, Fields } from "remult"
+import { Entity, Fields, Validators } from 'remult'
 
-@Entity("customers", {
+@Entity('customers', {
   allowApiCrud: true,
 })
 export class Customer {
   @Fields.cuid()
-  id = ""
+  id = ''
+  @Fields.string({
+    validate: Validators.required,
+  })
+  name = ''
   @Fields.string()
-  name = ""
-  @Fields.string()
-  city = ""
+  city = ''
 }
-@Entity("orders", {
+@Entity('orders', {
   allowApiCrud: true,
 })
 export class Order {
   @Fields.cuid()
-  id = ""
+  id = ''
   @Fields.string()
-  customer = ""
+  customer = ''
   @Fields.number()
   amount = 0
 }

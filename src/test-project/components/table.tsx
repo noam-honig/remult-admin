@@ -1,6 +1,6 @@
-import { ErrorInfo, useEffect, useMemo, useState } from "react"
-import { EntityOrderBy, Repository } from "remult"
-import { FieldUIInfo } from "../../lib/entity-info"
+import { useEffect, useMemo, useState } from 'react'
+import { ErrorInfo, EntityOrderBy, Repository } from 'remult'
+import { FieldUIInfo } from '../../lib/entity-info'
 
 export function Table({
   columns,
@@ -22,8 +22,8 @@ export function Table({
 
   function toggleOrderBy(key: string) {
     let dir = orderBy[key]
-    if (dir === undefined) dir = "asc"
-    else if (dir === "asc") dir = "desc"
+    if (dir === undefined) dir = 'asc'
+    else if (dir === 'asc') dir = 'desc'
     else dir = undefined
     setOrderBy({ [key]: dir })
   }
@@ -39,7 +39,7 @@ export function Table({
               </th>
             ))}
             <th>
-              Actions{" "}
+              Actions{' '}
               {!newRow && (
                 <button onClick={() => setNewRow(repo.create())}>New</button>
               )}
@@ -112,8 +112,18 @@ function EditableRow({
             value={value[x.key]}
             onChange={(e) => {
               setValue({ ...value, [x.key]: e.target.value })
+              if (error?.modelState?.[x.key])
+                setError({
+                  ...error,
+                  modelState: { ...error.modelState, [x.key]: undefined },
+                })
             }}
           />
+          {error?.modelState?.[x.key] && (
+            <div style={{ fontSize: 'small', color: 'red' }}>
+              {error?.modelState?.[x.key]}
+            </div>
+          )}
         </td>
       ))}
       <td>

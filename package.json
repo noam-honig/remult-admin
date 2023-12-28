@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && tsc -p tsconfig.lib.json && tsx src/misc/build.ts",
-    "release": "npm run build && tsx npm run patch-versions",
+    "release": "npm run build && npm run patch-versions",
     "patch-versions": " FOR /F %i in ('npm version patch -m \"release %s\"') DO git push origin %i && tsx src/misc/copy.ts",
     "preview": "vite preview"
   },

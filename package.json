@@ -17,27 +17,28 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.2",
+    "@mui/material": "^5.15.2",
+    "@mui/system": "^5.15.2",
+    "@mui/x-data-grid": "^6.18.6",
+    "@mui/x-date-pickers": "^6.18.6",
     "@types/express": "^4.17.17",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.1.0",
+    "dayjs": "^1.11.10",
     "express": "^4.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.1",
     "remult": "^0.23.5",
+    "remult-uikit": "^0.0.45",
     "tsx": "^3.12.3",
     "typescript": "^4.9.3",
     "vite": "^4.1.0",
     "vite-plugin-singlefile": "^0.13.5",
-    "vite3-plugin-express": "^0.1.3",
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.15.2",
-    "@mui/system": "^5.15.2",
-    "@mui/x-data-grid": "^6.18.6",
-    "@mui/x-date-pickers": "^6.18.6",
-    "dayjs": "^1.11.10",
-    "remult-uikit": "^0.0.43"
+    "vite3-plugin-express": "^0.1.3"
   }
 }

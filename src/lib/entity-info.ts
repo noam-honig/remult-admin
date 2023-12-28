@@ -1,3 +1,5 @@
+import { ClassType } from 'remult'
+
 export interface EntityUIInfo {
   key: string
   caption: string
@@ -7,4 +9,7 @@ export interface EntityUIInfo {
 export interface FieldUIInfo {
   key: string
   caption: string
+}
+export interface AdminOptions {
+  entities: ClassType<any>[]
 }

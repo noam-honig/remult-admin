@@ -1,6 +1,6 @@
 import { ErrorInfo, useEffect, useMemo, useState } from "react"
 import { EntityOrderBy, Repository } from "remult"
-import { FieldUIInfo } from "../entity-browser/entity-info"
+import { FieldUIInfo } from "../../lib/entity-info"
 
 export function Table({
   columns,
@@ -15,7 +15,7 @@ export function Table({
   useEffect(
     () =>
       repo
-        .liveQuery({ orderBy })
+        .liveQuery({ orderBy, limit: 25 })
         .subscribe((info) => setItems(info.applyChanges)),
     [orderBy, columns]
   )

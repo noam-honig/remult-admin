@@ -1,11 +1,10 @@
 import fs from "fs"
 
-const html = fs.readFileSync("dist/index.html", "utf8")
+const html = fs.readFileSync("tmp/index.html", "utf8")
 const javascript = fs.readFileSync("dist/index.js", "utf8")
 
-fs.mkdirSync("dist/entity-browser", { recursive: true })
 fs.writeFileSync(
-  "dist/entity-browser/index.js",
+  "dist/index.js",
 
   javascript.replace(/\/\*\*FROM \*\/.*?\/\*\*TO \*\//gs, "") +
     `function getHtml(){

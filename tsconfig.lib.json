@@ -6,9 +6,9 @@
     "esModuleInterop": true,
     "noEmit": false,
     "outDir": "dist",
-    "rootDir": "src/entity-browser",
+    "rootDir": "src/lib",
 
     "declaration": true
   },
-  "include": ["src/entity-browser/index.ts"]
+  "include": ["src/lib/index.ts"]
 }

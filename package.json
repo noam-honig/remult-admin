@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "dev-node": "tsx watch src/server",
-    "start": "node dist/server/",
-    "build": "tsc && vite build && tsc -p tsconfig.lib.json",
+    "build": "tsc && vite build && tsc -p tsconfig.lib.json && tsx src/misc/build.ts",
+    "release": "npm run build && tsx npm run patch-versions",
+    "patch-versions": " FOR /F %i in ('npm version patch -m \"release %s\"') DO git push origin %i && tsx src/misc/copy.ts",
     "preview": "vite preview"
   },
   "dependencies": {},
@@ -22,6 +22,7 @@
     "tsx": "^3.12.3",
     "typescript": "^4.9.3",
     "vite": "^4.1.0",
+    "vite3-plugin-express": "^0.1.3",
     "vite-plugin-singlefile": "^0.13.5"
   }
 }

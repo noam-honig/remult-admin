@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from 'react'
 import {
   Entity,
   EntityOrderBy,
@@ -6,9 +6,9 @@ import {
   Fields,
   Repository,
   repo,
-} from "remult"
-import { Table } from "./components/table"
-import { EntityUIInfo } from "./entity-browser/entity-info"
+} from 'remult'
+import { Table } from './components/table'
+import { EntityUIInfo } from '../lib/entity-info'
 
 declare const entities: EntityUIInfo[]
 
@@ -33,26 +33,9 @@ function App() {
     }
 
     if (import.meta.env.DEV) {
-      setIt([
-        {
-          key: "customers",
-          caption: "Customers",
-          fields: [
-            {
-              key: "id",
-              caption: "Id",
-            },
-            {
-              key: "name",
-              caption: "Name",
-            },
-            {
-              key: "city",
-              caption: "City",
-            },
-          ],
-        },
-      ])
+      fetch('/api/dev-admin')
+        .then((x) => x.json())
+        .then((x) => setIt(x))
     } else {
       setIt(entities)
     }

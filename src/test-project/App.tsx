@@ -9,6 +9,7 @@ import {
 } from 'remult'
 import { Table } from './components/table'
 import { EntityUIInfo } from '../lib/entity-info'
+import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom'
 
 declare const entities: EntityUIInfo[]
 
@@ -43,12 +44,33 @@ function App() {
 
   return (
     <>
-      {tables?.map((table) => (
-        <div key={table.key}>
-          <h3>{table.caption}</h3>
-          <Table columns={table.fields} repo={table.repo} />
+      <BrowserRouter>
+        <div style={{ display: 'flex', padding: '10px' }}>
+          {tables?.map((t) => (
+            <Link key={t.key} style={{ marginRight: '10px' }} to={t.key}>
+              {t.key}
+            </Link>
+          ))}
         </div>
-      ))}
+        <Routes>
+          {tables?.map((table) => (
+            <Route
+              key={table.key}
+              path={table.key}
+              element={<Table columns={table.fields} repo={table.repo} />}
+            />
+          ))}
+
+          <Route
+            path="/"
+            element={
+              <Navigate
+                to={tables && tables.length > 0 ? tables[0].key : '/'}
+              />
+            }
+          />
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }

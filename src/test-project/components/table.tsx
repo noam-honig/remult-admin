@@ -21,7 +21,7 @@ export function Table({
   useEffect(
     () =>
       repo.liveQuery(options).subscribe((info) => setItems(info.applyChanges)),
-    [options]
+    [options, columns, repo]
   )
 
   function toggleOrderBy(key: string) {

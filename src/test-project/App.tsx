@@ -1,21 +1,16 @@
-import { useEffect, useMemo, useState } from 'react'
-import {
-  Entity,
-  EntityOrderBy,
-  ErrorInfo,
-  Fields,
-  Repository,
-  repo,
-} from 'remult'
+import { useEffect, useState } from 'react'
+import { Entity, Fields, Repository, repo } from 'remult'
 import { Table } from './components/table'
 import { EntityUIInfo } from '../lib/entity-info'
-import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom'
+import { RemultGrid } from 'remult-uikit'
+import { BrowserRouter, Routes as Router, Route, Link } from 'react-router-dom'
 
 declare const entities: EntityUIInfo[]
 
 function App() {
   const [tables, setTables] =
     useState<(EntityUIInfo & { repo: Repository<any> })[]>()
+
   useEffect(() => {
     function setIt(myEntities: EntityUIInfo[]) {
       setTables(
@@ -70,10 +65,36 @@ function App() {
             }
           />
         </Routes>
+        {/* {tables?.map((table) => (
+        <div key={table.key}>
+          <h3>{table.caption}</h3>
+          <Table columns={table.fields} repo={table.repo} />
+        </div>
+      ))} */}
       </BrowserRouter>
     </>
   )
 }
+/* <>
+<BrowserRouter>
+	<div style={{ display: 'flex', padding: '10px' }}>
+		{tables?.map((t) => (
+			<Link key={t.key} style={{ marginRight: '10px' }} to={t.key}>
+				{t.key}
+			</Link>
+		))}
+	</div>
+	<Router>
+		{tables?.map((t) => (
+			<Route
+				key={t.key}
+				path={t.key}
+				element={<RemultGrid repo={t.repo} />}
+			/>
+		))}
+	</Router>
+</BrowserRouter>
+</> */
 
 export default App
 //[ ] - route per entity

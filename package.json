@@ -1,7 +1,7 @@
 {
   "name": "react-vite-express-starter",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && tsc -p tsconfig.lib.json && tsx src/misc/build.ts",

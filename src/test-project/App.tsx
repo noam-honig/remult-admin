@@ -3,7 +3,13 @@ import { Entity, Fields, Repository, repo } from 'remult'
 import { Table } from './components/table'
 import { EntityUIInfo } from '../lib/entity-info'
 import { RemultGrid } from 'remult-uikit'
-import { BrowserRouter, Routes as Router, Route, Link } from 'react-router-dom'
+import {
+  BrowserRouter,
+  Routes as Router,
+  Route,
+  Link,
+  Navigate,
+} from 'react-router-dom'
 
 declare const entities: EntityUIInfo[]
 
@@ -47,62 +53,27 @@ function App() {
             </Link>
           ))}
         </div>
-        <Routes>
-          {tables?.map((table) => (
+        <Router>
+          {tables?.map((t) => (
             <Route
-              key={table.key}
-              path={table.key}
-              element={<Table columns={table.fields} repo={table.repo} />}
+              key={t.key}
+              path={t.key}
+              element={<RemultGrid repo={t.repo} />}
             />
           ))}
-
-          <Route
-            path="/"
-            element={
-              <Navigate
-                to={tables && tables.length > 0 ? tables[0].key : '/'}
-              />
-            }
-          />
-        </Routes>
-        {/* {tables?.map((table) => (
-        <div key={table.key}>
-          <h3>{table.caption}</h3>
-          <Table columns={table.fields} repo={table.repo} />
-        </div>
-      ))} */}
+        </Router>
       </BrowserRouter>
     </>
   )
 }
-/* <>
-<BrowserRouter>
-	<div style={{ display: 'flex', padding: '10px' }}>
-		{tables?.map((t) => (
-			<Link key={t.key} style={{ marginRight: '10px' }} to={t.key}>
-				{t.key}
-			</Link>
-		))}
-	</div>
-	<Router>
-		{tables?.map((t) => (
-			<Route
-				key={t.key}
-				path={t.key}
-				element={<RemultGrid repo={t.repo} />}
-			/>
-		))}
-	</Router>
-</BrowserRouter>
-</> */
 
 export default App
-//[ ] - route per entity
+//[ ] - route per entity - V
 //[ ] - select entity
-//[ ] - use your library
+//[ ] - use your library - V
 //[ ] - column filtering
 //[ ] - serialize find options to uri
-//[ ] - support checkbox :)
-//[ ] - respect api update / delete /insert ruiles
-//[ ] - respect include in apu
-//[ ] - respect allow update for column
+//[ ] - support checkbox :) - V
+//[ ] - respect api update / delete /insert rules - V
+//[ ] - respect include in api - V
+//[ ] - respect allow update for column - V

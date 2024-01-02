@@ -58,9 +58,13 @@ function App() {
             <Route
               key={t.key}
               path={t.key}
-              element={<RemultGrid repo={t.repo} />}
+              element={<RemultGrid showId repo={t.repo} />}
             />
           ))}
+          <Route
+            path="*"
+            element={<Navigate to={`${tables && tables[0].key}`} replace />}
+          />
         </Router>
       </BrowserRouter>
     </>

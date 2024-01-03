@@ -43,30 +43,28 @@ function App() {
   }, [])
 
   return (
-    <>
-      <BrowserRouter>
-        <div style={{ display: 'flex', padding: '10px' }}>
-          {tables?.map((t) => (
-            <Link key={t.key} style={{ marginRight: '10px' }} to={t.key}>
-              {t.key}
-            </Link>
-          ))}
-        </div>
-        <Router>
-          {tables?.map((t) => (
-            <Route
-              key={t.key}
-              path={t.key}
-              element={<RemultGrid showId repo={t.repo} />}
-            />
-          ))}
+    <BrowserRouter>
+      <div style={{ display: 'flex', padding: '10px' }}>
+        {tables?.map((t) => (
+          <Link key={t.key} style={{ marginRight: '10px' }} to={t.key}>
+            {t.key}
+          </Link>
+        ))}
+      </div>
+      <Router>
+        {tables?.map((t) => (
           <Route
-            path="*"
-            element={<Navigate to={`${tables && tables[0].key}`} replace />}
+            key={t.key}
+            path={t.key}
+            element={<RemultGrid showId repo={t.repo as any} />}
           />
-        </Router>
-      </BrowserRouter>
-    </>
+        ))}
+        <Route
+          path="*"
+          element={<Navigate to={`${tables && tables[0].key}`} replace />}
+        />
+      </Router>
+    </BrowserRouter>
   )
 }
 

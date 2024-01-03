@@ -6,9 +6,9 @@ import {
   BrowserRouter,
   Routes as Router,
   Route,
-  Link,
   Navigate,
 } from 'react-router-dom'
+import { AppLink } from './components/AppLink'
 
 declare const entities: EntityUIInfo[]
 
@@ -46,9 +46,9 @@ function App() {
     <BrowserRouter>
       <div style={{ display: 'flex', padding: '10px' }}>
         {tables?.map((t) => (
-          <Link key={t.key} style={{ marginRight: '10px' }} to={t.key}>
+          <AppLink key={t.key} to={t.key}>
             {t.key}
-          </Link>
+          </AppLink>
         ))}
       </div>
       <Router>

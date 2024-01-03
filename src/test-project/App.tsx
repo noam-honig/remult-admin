@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Entity, Fields, Repository, repo } from 'remult'
-import { Table } from './components/table'
 import { EntityUIInfo } from '../lib/entity-info'
 import { RemultGrid } from 'remult-uikit'
 import {

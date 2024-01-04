@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Entity, Fields, Repository, repo } from 'remult'
 import { EntityUIInfo } from '../lib/entity-info'
-import { RemultGrid } from 'remult-uikit'
+import { RemultGridMUI } from 'remult-uikit'
+import { RemultGridMRT } from 'remult-uikit'
 import {
   BrowserRouter,
   Routes as Router,
@@ -56,7 +57,12 @@ function App() {
           <Route
             key={t.key}
             path={t.key}
-            element={<RemultGrid showId repo={t.repo as any} />}
+            element={
+              <>
+                <RemultGridMRT repo={t.repo as any} />
+                <RemultGridMUI showId repo={t.repo as any} />
+              </>
+            }
           />
         ))}
         <Route

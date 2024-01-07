@@ -1,21 +1,22 @@
-import { useEffect, useMemo, useState } from 'react'
-import {
-  Entity,
-  EntityOrderBy,
-  ErrorInfo,
-  Fields,
-  Repository,
-  repo,
-} from 'remult'
-import { Table } from './components/table'
+import { useEffect, useState } from 'react'
+import { Entity, Fields, Repository, repo } from 'remult'
 import { EntityUIInfo } from '../lib/entity-info'
-import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom'
+import { RemultGridMUI } from 'remult-uikit'
+import { RemultGridMRT } from 'remult-uikit'
+import {
+  BrowserRouter,
+  Routes as Router,
+  Route,
+  Navigate,
+} from 'react-router-dom'
+import { AppLink } from './components/AppLink'
 
 declare const entities: EntityUIInfo[]
 
 function App() {
   const [tables, setTables] =
     useState<(EntityUIInfo & { repo: Repository<any> })[]>()
+
   useEffect(() => {
     function setIt(myEntities: EntityUIInfo[]) {
       setTables(
@@ -43,45 +44,43 @@ function App() {
   }, [])
 
   return (
-    <>
-      <BrowserRouter>
-        <div style={{ display: 'flex', padding: '10px' }}>
-          {tables?.map((t) => (
-            <Link key={t.key} style={{ marginRight: '10px' }} to={t.key}>
-              {t.key}
-            </Link>
-          ))}
-        </div>
-        <Routes>
-          {tables?.map((table) => (
-            <Route
-              key={table.key}
-              path={table.key}
-              element={<Table columns={table.fields} repo={table.repo} />}
-            />
-          ))}
-
+    <BrowserRouter>
+      <div style={{ display: 'flex', padding: '10px' }}>
+        {tables?.map((t) => (
+          <AppLink key={t.key} to={t.key}>
+            {t.key}
+          </AppLink>
+        ))}
+      </div>
+      <Router>
+        {tables?.map((t) => (
           <Route
-            path="/"
+            key={t.key}
+            path={t.key}
             element={
-              <Navigate
-                to={tables && tables.length > 0 ? tables[0].key : '/'}
-              />
+              <>
+                <RemultGridMRT repo={t.repo as any} />
+                <RemultGridMUI showId repo={t.repo as any} />
+              </>
             }
           />
-        </Routes>
-      </BrowserRouter>
-    </>
+        ))}
+        <Route
+          path="*"
+          element={<Navigate to={`${tables && tables[0].key}`} replace />}
+        />
+      </Router>
+    </BrowserRouter>
   )
 }
 
 export default App
-//[ ] - route per entity
+//[ ] - route per entity - V
 //[ ] - select entity
-//[ ] - use your library
+//[ ] - use your library - V
 //[ ] - column filtering
 //[ ] - serialize find options to uri
-//[ ] - support checkbox :)
-//[ ] - respect api update / delete /insert ruiles
-//[ ] - respect include in apu
-//[ ] - respect allow update for column
+//[ ] - support checkbox :) - V
+//[ ] - respect api update / delete /insert rules - V
+//[ ] - respect include in api - V
+//[ ] - respect allow update for column - V

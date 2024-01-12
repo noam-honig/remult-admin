@@ -1,11 +1,14 @@
 import { ClassType, Remult, remult } from 'remult'
 
 export default function remultAdminHtml(options: AdminOptions) {
+  let optionsFromServer = { ...options }
+  //@ts-ignore
+  delete optionsFromServer.entities
   return getHtml().replace(
     '<!--PLACE_HERE-->',
-    `<script >const entities=${JSON.stringify(
-      buildEntityInfo(options)
-    )}</script>`
+    `<script >const entities = ${JSON.stringify(buildEntityInfo(options))}
+    const optionsFromServer = ${JSON.stringify(optionsFromServer)}
+    </script>`
   )
 }
 

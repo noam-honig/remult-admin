@@ -10,6 +10,9 @@ export interface FieldUIInfo {
   key: string
   caption: string
 }
-export interface AdminOptions {
+export interface AdminOptions extends DisplayOptions {
   entities: ClassType<any>[]
+}
+export interface DisplayOptions {
+  baseUrl?: string
 }

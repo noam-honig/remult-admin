@@ -8,14 +8,17 @@ import {
   repo,
 } from 'remult'
 import { Table } from './components/table'
-import { EntityUIInfo } from '../lib/entity-info'
+import { DisplayOptions, EntityUIInfo } from '../lib/entity-info'
 import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom'
 
 declare const entities: EntityUIInfo[]
+declare let optionsFromServer: DisplayOptions
 
 function App() {
   const [tables, setTables] =
     useState<(EntityUIInfo & { repo: Repository<any> })[]>()
+  const [options, setOptions] = useState<DisplayOptions>({})
+
   useEffect(() => {
     function setIt(myEntities: EntityUIInfo[]) {
       setTables(
@@ -24,7 +27,7 @@ function App() {
           for (const f of info.fields) {
             Fields.string()(C.prototype, f.key)
           }
-          Entity(info.caption, { allowApiCrud: true })(C)
+          Entity(info.key, { allowApiCrud: true, caption: info.caption })(C)
           return {
             ...info,
             repo: repo(C),
@@ -39,12 +42,13 @@ function App() {
         .then((x) => setIt(x))
     } else {
       setIt(entities)
+      setOptions(optionsFromServer)
     }
   }, [])
 
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename={options?.baseUrl}>
         <div style={{ display: 'flex', padding: '10px' }}>
           {tables?.map((t) => (
             <Link key={t.key} style={{ marginRight: '10px' }} to={t.key}>

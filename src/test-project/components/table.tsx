@@ -18,11 +18,12 @@ export function Table({
     limit: 25,
     page: 1,
   })
-  useEffect(
-    () =>
-      repo.liveQuery(options).subscribe((info) => setItems(info.applyChanges)),
-    [options, columns, repo]
-  )
+  useEffect(() => {
+    setItems(undefined)
+    return repo
+      .liveQuery(options)
+      .subscribe((info) => setItems(info.applyChanges))
+  }, [options, columns, repo])
 
   function toggleOrderBy(key: string) {
     let dir = options.orderBy?.[key]

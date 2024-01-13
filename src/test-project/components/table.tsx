@@ -22,11 +22,13 @@ export function Table({
     page: 1,
   })
   useEffect(() => {
-    setItems(undefined)
     return repo
       .liveQuery(options)
       .subscribe((info) => setItems(info.applyChanges))
   }, [options, columns, repo])
+  useEffect(() => {
+    setItems(undefined)
+  }, [repo, columns])
 
   function toggleOrderBy(key: string) {
     let dir = options.orderBy?.[key]

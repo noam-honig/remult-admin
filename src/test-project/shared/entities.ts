@@ -1,4 +1,4 @@
-import { Entity, Fields, Validators } from 'remult'
+import { Entity, Fields, Relations, Validators } from 'remult'
 
 @Entity('customers', {
   allowApiCrud: true,
@@ -19,7 +19,7 @@ export class Customer {
 export class Order {
   @Fields.cuid()
   id = ''
-  @Fields.string()
+  @Relations.toOne(() => Customer)
   customer = ''
   @Fields.number()
   amount = 0

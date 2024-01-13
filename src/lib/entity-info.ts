@@ -9,6 +9,12 @@ export interface EntityUIInfo {
 export interface FieldUIInfo {
   key: string
   caption: string
+  relation?: FieldRelationInfo
+}
+export interface FieldRelationInfo {
+  entityKey: string
+  idField: string
+  captionField: string
 }
 export interface AdminOptions extends DisplayOptions {
   entities: ClassType<any>[]

@@ -3,13 +3,16 @@ import { EntityOrderBy, Repository, FindOptions } from 'remult'
 import { FieldUIInfo } from '../../lib/entity-info'
 import { EditableRow } from './EditableRow'
 import Filter from './Filter'
+import { God } from '../God'
 
 export function Table({
   columns,
   repo,
+  god,
 }: {
   columns: FieldUIInfo[]
   repo: Repository<any>
+  god: God
 }) {
   const [items, setItems] = useState<any[]>()
 
@@ -80,6 +83,7 @@ export function Table({
                 setNewRow(undefined)
               }}
               columns={columns}
+              god={god}
             ></EditableRow>
           )}
           {items?.map((row) => (
@@ -91,6 +95,7 @@ export function Table({
               }}
               deleteAction={() => repo.delete(row)}
               columns={columns}
+              god={god}
             />
           ))}
         </tbody>

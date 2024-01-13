@@ -1,16 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ErrorInfo } from 'remult'
+import { EditableField } from './EditableField'
+import { FieldUIInfo } from '../../lib/entity-info'
+import { God } from '../God'
 
 export function EditableRow({
   row,
   save,
   columns,
   deleteAction,
+  god,
 }: {
   row: any
   save: (data: any) => Promise<void>
   deleteAction?: () => Promise<void>
-  columns: { key: string }[]
+  columns: FieldUIInfo[]
+  god: God
 }) {
   const [value, setValue] = useState(row)
   const [error, setError] = useState<ErrorInfo>()
@@ -35,17 +40,20 @@ export function EditableRow({
     <tr>
       {columns.map((x) => (
         <td key={x.key}>
-          <input
+          <EditableField
+            info={x}
             value={value[x.key]}
-            onChange={(e) => {
-              setValue({ ...value, [x.key]: e.target.value })
+            onChange={(fieldValue) => {
+              setValue({ ...value, [x.key]: fieldValue })
               if (error?.modelState?.[x.key])
                 setError({
                   ...error,
                   modelState: { ...error.modelState, [x.key]: undefined },
                 })
             }}
+            god={god}
           />
+
           {error?.modelState?.[x.key] && (
             <div style={{ fontSize: 'small', color: 'red' }}>
               {error?.modelState?.[x.key]}

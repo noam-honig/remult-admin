@@ -10,58 +10,45 @@ import {
 import { Table } from './components/table'
 import { DisplayOptions, EntityUIInfo } from '../lib/entity-info'
 import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom'
+import { God } from './God'
 
 declare const entities: EntityUIInfo[]
 declare let optionsFromServer: DisplayOptions
 
 function App() {
-  const [tables, setTables] =
-    useState<(EntityUIInfo & { repo: Repository<any> })[]>()
+  const [god, setGod] = useState<God>()
   const [options, setOptions] = useState<DisplayOptions>({})
 
   useEffect(() => {
-    function setIt(myEntities: EntityUIInfo[]) {
-      setTables(
-        myEntities.map((info) => {
-          class C {}
-          for (const f of info.fields) {
-            Fields.string()(C.prototype, f.key)
-          }
-          Entity(info.key, { allowApiCrud: true, caption: info.caption })(C)
-          return {
-            ...info,
-            repo: repo(C),
-          }
-        })
-      )
-    }
-
     if (import.meta.env.DEV) {
       fetch('/api/dev-admin')
         .then((x) => x.json())
-        .then((x) => setIt(x))
+        .then((x) => setGod(new God(x)))
     } else {
-      setIt(entities)
+      setGod(new God(entities))
       setOptions(optionsFromServer)
     }
   }, [])
+  if (!god) return <div>Loading...</div>
 
   return (
     <>
       <BrowserRouter basename={options?.baseUrl}>
         <div style={{ display: 'flex', padding: '10px' }}>
-          {tables?.map((t) => (
+          {god?.tables.map((t) => (
             <Link key={t.key} style={{ marginRight: '10px' }} to={t.key}>
               {t.key}
             </Link>
           ))}
         </div>
         <Routes>
-          {tables?.map((table) => (
+          {god?.tables.map((table) => (
             <Route
               key={table.key}
               path={table.key}
-              element={<Table columns={table.fields} repo={table.repo} />}
+              element={
+                <Table god={god} columns={table.fields} repo={table.repo} />
+              }
             />
           ))}
 
@@ -69,7 +56,11 @@ function App() {
             path="/"
             element={
               <Navigate
-                to={tables && tables.length > 0 ? tables[0].key : '/'}
+                to={
+                  god?.tables && god?.tables.length > 0
+                    ? god?.tables[0].key
+                    : '/'
+                }
               />
             }
           />

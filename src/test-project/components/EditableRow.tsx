@@ -42,13 +42,16 @@ export function EditableRow({
         <td key={x.key}>
           <EditableField
             info={x}
-            value={value[x.key]}
+            value={value[x.valFieldKey]}
             onChange={(fieldValue) => {
-              setValue({ ...value, [x.key]: fieldValue })
-              if (error?.modelState?.[x.key])
+              setValue({ ...value, [x.valFieldKey]: fieldValue })
+              if (error?.modelState?.[x.valFieldKey])
                 setError({
                   ...error,
-                  modelState: { ...error.modelState, [x.key]: undefined },
+                  modelState: {
+                    ...error.modelState,
+                    [x.valFieldKey]: undefined,
+                  },
                 })
             }}
             god={god}
@@ -56,7 +59,7 @@ export function EditableRow({
 
           {error?.modelState?.[x.key] && (
             <div style={{ fontSize: 'small', color: 'red' }}>
-              {error?.modelState?.[x.key]}
+              {error?.modelState?.[x.valFieldKey]}
             </div>
           )}
         </td>

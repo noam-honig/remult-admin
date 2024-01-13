@@ -20,11 +20,16 @@ export function buildEntityInfo(options: AdminOptions) {
       key: metadata.key,
       caption: metadata.caption,
       fields: metadata.fields.toArray().map((x) => {
-        let relation: FieldUIInfo['relation']
+        let relation: FieldRelationInfo | undefined
+        let valFieldKey = x.key
         const info = getRelationInfo(x.options)
-        if (info && info.type === 'reference') {
+        if (info && (info.type === 'reference' || info.type === 'toOne')) {
           const relRepo = repo(info.toType())
           const idField = relRepo.metadata.idMetadata.field.key
+          if (info.type == 'toOne') {
+            //@ts-ignore
+            valFieldKey = x.options['field']
+          }
           relation = {
             entityKey: relRepo.metadata.key,
             idField,
@@ -35,16 +40,17 @@ export function buildEntityInfo(options: AdminOptions) {
         }
         return {
           key: x.key,
+          valFieldKey,
           caption: x.caption,
           relation,
-        }
+        } satisfies FieldUIInfo
       }),
     }))
 }
 
 /**FROM */
 import fs from 'fs'
-import { AdminOptions, FieldUIInfo } from './entity-info'
+import { AdminOptions, FieldRelationInfo, FieldUIInfo } from './entity-info'
 function getHtml() {
   return fs.readFileSync('tmp/index.html', 'utf8')
 }

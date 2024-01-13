@@ -8,6 +8,7 @@ export interface EntityUIInfo {
 
 export interface FieldUIInfo {
   key: string
+  valFieldKey: string
   caption: string
   relation?: FieldRelationInfo
 }

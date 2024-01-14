@@ -14,7 +14,7 @@ export function EditableField({
   info: FieldUIInfo
   god: God
 }) {
-  if (info.relation)
+  if (info.relationToOne)
     return (
       <RelationField value={value} onChange={onChange} info={info} god={god} />
     )
@@ -44,7 +44,7 @@ export function RelationField({
       {displayValue}
       {dialogOpen && (
         <SelectDialog
-          relation={info.relation!}
+          relation={info.relationToOne!}
           onSelect={onChange}
           god={god}
           onClose={() => setDialogOpen(false)}

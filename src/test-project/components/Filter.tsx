@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FieldUIInfo } from '../../lib/entity-info'
 import {
   ComparisonValueFilter,
@@ -32,11 +32,8 @@ export default function Filter({
   filter?: EntityFilter<any>
   setFilter: (filter: EntityFilter<any>) => void
 }) {
-  const [show, setShow] = useState(false)
   const [filterValues, setFilterValues] = useState<(typeof defaultFilter)[]>([])
-  useEffect(() => {
-    translateFilterToFilterValues()
-  }, [filter])
+  const ref = useRef<HTMLDialogElement>(null)
 
   function addFilter() {
     setFilterValues([
@@ -51,90 +48,87 @@ export default function Filter({
     ])
   }
 
-  if (!show) {
-    return (
+  return (
+    <>
+      {' '}
       <button
         onClick={() => {
-          setShow(!show)
-          if (filterValues.length == 0) {
-            addFilter()
-          }
+          ref.current?.showModal()
+          translateFilterToFilterValues()
         }}
       >
         Filter
       </button>
-    )
-  }
+      <dialog ref={ref}>
+        <strong>filter:</strong>
+        <div>
+          {filterValues?.map((field, i) => {
+            function set(key: keyof typeof field, value: any) {
+              setFilterValues(
+                filterValues.map((x, j) =>
+                  i === j ? { ...x, [key]: value } : x
+                )
+              )
+            }
 
-  return (
-    <div style={{ display: 'inline-block', border: 'solid 1px', padding: 8 }}>
-      <strong>filter:</strong>
-      <div>
-        {filterValues?.map((field, i) => {
-          function set(key: keyof typeof field, value: any) {
-            setFilterValues(
-              filterValues.map((x, j) => (i === j ? { ...x, [key]: value } : x))
-            )
-          }
-
-          return (
-            <div key={field.key}>
-              <select onChange={(e) => set('key', e.target.value)}>
-                {fields
-                  .filter(
-                    (x) =>
-                      x.key == field.key ||
-                      !filterValues.find((y) => y.key == x.key)
-                  )
-                  .map((x) => (
+            return (
+              <div key={field.key}>
+                <select onChange={(e) => set('key', e.target.value)}>
+                  {fields
+                    .filter(
+                      (x) =>
+                        x.key == field.key ||
+                        !filterValues.find((y) => y.key == x.key)
+                    )
+                    .map((x) => (
+                      <option
+                        key={x.key}
+                        value={x.key}
+                        selected={x.key === field.key}
+                      >
+                        {x.caption}
+                      </option>
+                    ))}
+                </select>
+                <select onChange={(e) => set('operator', e.target.value)}>
+                  {operators.map(([key, caption]) => (
                     <option
-                      key={x.key}
-                      value={x.key}
-                      selected={x.key === field.key}
+                      key={key}
+                      value={caption}
+                      selected={key === field.operator}
                     >
-                      {x.caption}
+                      {caption}
                     </option>
                   ))}
-              </select>
-              <select onChange={(e) => set('operator', e.target.value)}>
-                {operators.map(([key, caption]) => (
-                  <option
-                    key={key}
-                    value={caption}
-                    selected={key === field.operator}
-                  >
-                    {caption}
-                  </option>
-                ))}
-              </select>
-              <input
-                value={field.value}
-                onChange={(e) => set('value', e.target.value)}
-              />
-              <button
-                onClick={() =>
-                  setFilterValues(filterValues.filter((x) => x != field))
-                }
-              >
-                x
-              </button>
-            </div>
-          )
-        })}
-        <button onClick={addFilter}>Add</button>
-        <div>
-          <button onClick={() => applyFilterValues()}>apply</button>
-          <button
-            onClick={() => {
-              translateFilterToFilterValues()
-              setShow(false)
-            }}
-          >
-            Cancel
-          </button>
+                </select>
+                <input
+                  value={field.value}
+                  onChange={(e) => set('value', e.target.value)}
+                />
+                <button
+                  onClick={() =>
+                    setFilterValues(filterValues.filter((x) => x != field))
+                  }
+                >
+                  x
+                </button>
+              </div>
+            )
+          })}
+          <button onClick={addFilter}>Add</button>
+          <div>
+            <button onClick={() => applyFilterValues()}>apply</button>
+            <button
+              onClick={() => {
+                ref.current?.close()
+              }}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
-      </div>
-    </div>
+      </dialog>
+    </>
   )
 
   function applyFilterValues() {
@@ -147,7 +141,7 @@ export default function Filter({
       }
     }
     setFilter(filter)
-    setShow(false)
+    ref.current?.close()
   }
 
   function translateFilterToFilterValues() {
@@ -169,5 +163,8 @@ export default function Filter({
       }
     }
     setFilterValues(values)
+    if (values.length == 0) {
+      addFilter()
+    }
   }
 }

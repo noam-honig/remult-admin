@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { FieldRelationInfo, FieldUIInfo } from '../../lib/entity-info'
+import { FieldRelationToOneInfo, FieldUIInfo } from '../../lib/entity-info'
 import { God } from '../God'
 
 export function SelectDialog({
@@ -8,7 +8,7 @@ export function SelectDialog({
   onClose,
   god,
 }: {
-  relation: FieldRelationInfo
+  relation: FieldRelationToOneInfo
   onSelect: (value: any) => void
   onClose: () => void
   god: God

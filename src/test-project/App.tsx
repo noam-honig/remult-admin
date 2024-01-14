@@ -9,7 +9,14 @@ import {
 } from 'remult'
 import { Table } from './components/table'
 import { DisplayOptions, EntityUIInfo } from '../lib/entity-info'
-import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom'
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  Navigate,
+  NavLink,
+} from 'react-router-dom'
 import { God } from './God'
 
 declare const entities: EntityUIInfo[]
@@ -36,9 +43,18 @@ function App() {
       <BrowserRouter basename={options?.baseUrl}>
         <div style={{ display: 'flex', padding: '10px' }}>
           {god?.tables.map((t) => (
-            <Link key={t.key} style={{ marginRight: '10px' }} to={t.key}>
+            <NavLink
+              key={t.key}
+              to={t.key}
+              style={({ isActive }) => {
+                return {
+                  fontWeight: isActive ? 'bold' : '',
+                  marginRight: '10px',
+                }
+              }}
+            >
               {t.key}
-            </Link>
+            </NavLink>
           ))}
         </div>
         <Routes>
@@ -47,7 +63,12 @@ function App() {
               key={table.key}
               path={table.key}
               element={
-                <Table god={god} columns={table.fields} repo={table.repo} />
+                <Table
+                  god={god}
+                  columns={table.fields}
+                  repo={table.repo}
+                  relations={table.relations}
+                />
               }
             />
           ))}
@@ -71,12 +92,10 @@ function App() {
 }
 
 export default App
-//[ ] - route per entity
-//[ ] - select entity
-//[ ] - use your library
-//[ ] - column filtering
+//[v] - show sort order
+
 //[ ] - serialize find options to uri
 //[ ] - support checkbox :)
-//[ ] - respect api update / delete /insert ruiles
-//[ ] - respect include in apu
 //[ ] - respect allow update for column
+//[ ] - respect api update / delete /insert ruiles
+//[ ] - add json editor

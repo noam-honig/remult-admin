@@ -4,15 +4,20 @@ export interface EntityUIInfo {
   key: string
   caption: string
   fields: FieldUIInfo[]
+  relations: EntityRelationToManyInfo[]
+}
+export interface EntityRelationToManyInfo {
+  entityKey: string
+  fieldOnOtherEntity: string
 }
 
 export interface FieldUIInfo {
   key: string
   valFieldKey: string
   caption: string
-  relation?: FieldRelationInfo
+  relationToOne?: FieldRelationToOneInfo
 }
-export interface FieldRelationInfo {
+export interface FieldRelationToOneInfo {
   entityKey: string
   idField: string
   captionField: string

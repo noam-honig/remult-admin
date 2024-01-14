@@ -1,13 +1,13 @@
 import { Entity, Fields, Repository, repo } from 'remult'
 import {
   EntityUIInfo,
-  FieldRelationInfo,
+  FieldRelationToOneInfo,
   FieldUIInfo,
 } from '../lib/entity-info'
 
 export class God {
   async getItemsForSelect(
-    relation: FieldRelationInfo,
+    relation: FieldRelationToOneInfo,
     search: string | undefined
   ) {
     const repo = this.tables.find((t) => t.key == relation.entityKey)!.repo
@@ -31,7 +31,7 @@ export class God {
     }))
   }
   async displayValueFor(field: FieldUIInfo, value: any) {
-    const relations = field.relation!
+    const relations = field.relationToOne!
 
     const repo = this.tables.find((t) => t.key == relations.entityKey)!.repo
     const item = await repo.findId(value)

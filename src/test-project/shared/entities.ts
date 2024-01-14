@@ -12,6 +12,8 @@ export class Customer {
   name = ''
   @Fields.string()
   city = ''
+  @Relations.toMany(() => Order, 'customer')
+  orders?: Order[]
 }
 @Entity('orders', {
   allowApiCrud: true,

@@ -27,4 +27,6 @@ export class Order {
   customerInfo = ''
   @Fields.number()
   amount = 0
+  @Fields.json()
+  items = [{ id: 1, quantity: 5 }]
 }

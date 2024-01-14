@@ -89,9 +89,19 @@ export function EditableRow({
           </td>
         ))}
         <td style={{ whiteSpace: 'nowrap' }}>
-          <button disabled={!changed} onClick={doSave}>
-            save
-          </button>
+          {changed && (
+            <>
+              <button onClick={doSave}>save</button>
+              <button
+                onClick={() => {
+                  setValue(row)
+                  setError(undefined)
+                }}
+              >
+                reset
+              </button>
+            </>
+          )}
           {deleteAction && (
             <button
               onClick={async () => {

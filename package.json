@@ -27,6 +27,7 @@
     "remult": "^0.23.5",
     "tsx": "^3.12.3",
     "typescript": "^4.9.3",
+    "vanilla-jsoneditor": "^0.21.2",
     "vite": "^4.1.0",
     "vite-plugin-singlefile": "^0.13.5",
     "vite3-plugin-express": "^0.1.3"

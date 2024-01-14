@@ -35,7 +35,9 @@ export function Table({
           $and: [userFilter, { ...parentRelation }],
         },
       })
-      .subscribe((info) => setItems(info.applyChanges))
+      .subscribe((info) => {
+        setItems(info.applyChanges)
+      })
   }, [options, userFilter, columns, repo, parentRelation])
   useEffect(() => {
     repo.count({ $and: [userFilter, { ...parentRelation }] }).then(setTotalRows)

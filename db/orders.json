@@ -2,7 +2,13 @@
   {
     "id": "kcax72fqp7c82xzcae8kbkg8",
     "customer": "u02jbkrs1emph7uhkjv0yark",
-    "amount": 25
+    "amount": 25,
+    "items": [
+      {
+        "id": 1,
+        "quantity": 5
+      }
+    ]
   },
   {
     "id": "howh3agvdpkcui9n5r0y82fd",

@@ -52,6 +52,7 @@ export function buildEntityInfo(options: AdminOptions) {
         valFieldKey,
         caption: x.caption,
         relationToOne: relation,
+        type: x.valueConverter.fieldTypeInDb == 'json' ? 'json' : 'string',
       })
     }
     entities.push({

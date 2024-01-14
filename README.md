@@ -19,15 +19,15 @@ const entities = [
   /* entity types */
 ]
 const api = remultExpress({
-    entities,
-  })
+  entities,
+})
 app.use(api)
 
-app.get("/admin", api.withRemult, (req, res) =>
-  res.send(remultAdmin({
-    entities
-  }));
-);
+app.get('/admin/*', api.withRemult, (_, res) =>
+  remult.isAllowed('admin')
+    ? res.send(remultAdmin({ entities, baseUrl: '/admin' }))
+    : res.send(404)
+)
 
 app.listen(3000)
 ```

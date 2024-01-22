@@ -83,7 +83,11 @@ function App() {
 }
 
 export default App
-//[v] - show sort order
+
+//[V] - doesn't update well
+//[V] - live refresh doesn't work
+//[V] - update id doesn't work
+//[ ] - add loading indication
 
 //[ ] - serialize find options to uri
 //[ ] - support checkbox :)

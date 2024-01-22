@@ -15,7 +15,7 @@ export interface FieldUIInfo {
   key: string
   valFieldKey: string
   caption: string
-  type: 'json' | 'string'
+  type: 'json' | 'string' | 'number' | 'boolean'
   relationToOne?: FieldRelationToOneInfo
 }
 export interface FieldRelationToOneInfo {

@@ -43,9 +43,20 @@ export class God {
     this.tables = myEntities.map((info) => {
       class C {}
       for (const f of info.fields) {
-        if (f.type == 'json')
-          Fields.json()(C.prototype, f.key as keyof typeof C.prototype)
-        else Fields.string()(C.prototype, f.key)
+        switch (f.type) {
+          case 'json':
+            Fields.json()(C.prototype, f.key as keyof typeof C.prototype)
+            break
+          case 'number':
+            Fields.number()(C.prototype, f.key)
+            break
+          case 'boolean':
+            Fields.boolean()(C.prototype, f.key)
+            break
+          default:
+            Fields.string()(C.prototype, f.key)
+            break
+        }
       }
       Entity(info.key, { allowApiCrud: true, caption: info.caption })(C)
       return {

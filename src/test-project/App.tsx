@@ -1,12 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import {
-  Entity,
-  EntityOrderBy,
-  ErrorInfo,
-  Fields,
-  Repository,
-  repo,
-} from 'remult'
+
 import { Table } from './components/table'
 import { DisplayOptions, EntityUIInfo } from '../lib/entity-info'
 import {
@@ -18,6 +11,7 @@ import {
   NavLink,
 } from 'react-router-dom'
 import { God } from './God'
+import { Erd } from './components/erd/erd'
 
 declare const entities: EntityUIInfo[]
 declare let optionsFromServer: DisplayOptions
@@ -42,6 +36,9 @@ function App() {
     <>
       <BrowserRouter basename={options?.baseUrl}>
         <div>
+          <NavLink className="tab" to="erd">
+            ERD
+          </NavLink>
           {god?.tables.map((t) => (
             <NavLink className="tab" key={t.key} to={t.key}>
               {t.caption}
@@ -49,6 +46,7 @@ function App() {
           ))}
         </div>
         <Routes>
+          <Route path="erd" element={<Erd god={god} />} />
           {god?.tables.map((table) => (
             <Route
               key={table.key}
@@ -87,6 +85,9 @@ export default App
 //[V] - doesn't update well
 //[V] - live refresh doesn't work
 //[V] - update id doesn't work
+//[ ] - store erd positions
+//[ ] - support more complex relations
+//[ ] - support compound id for admin and erd
 //[ ] - add loading indication
 
 //[ ] - serialize find options to uri

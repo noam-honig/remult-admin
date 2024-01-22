@@ -41,19 +41,10 @@ function App() {
   return (
     <>
       <BrowserRouter basename={options?.baseUrl}>
-        <div style={{ display: 'flex', padding: '10px' }}>
+        <div>
           {god?.tables.map((t) => (
-            <NavLink
-              key={t.key}
-              to={t.key}
-              style={({ isActive }) => {
-                return {
-                  fontWeight: isActive ? 'bold' : '',
-                  marginRight: '10px',
-                }
-              }}
-            >
-              {t.key}
+            <NavLink className="tab" key={t.key} to={t.key}>
+              {t.caption}
             </NavLink>
           ))}
         </div>

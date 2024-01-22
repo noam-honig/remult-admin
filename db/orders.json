@@ -1,23 +1,12 @@
 [
   {
-    "id": "kcax72fqp7c82xzcae8kbkg8",
-    "customer": "u02jbkrs1emph7uhkjv0yark",
-    "amount": 25,
-    "items": [
-      {
-        "id": 1,
-        "quantity": 5
-      }
-    ]
-  },
-  {
     "id": "howh3agvdpkcui9n5r0y82fd",
     "customer": "yjqfncvf0shwck1aa7ocejyw",
     "amount": 35
   },
   {
     "id": "ejn0x2hsaqoj0iblk4rrmzvd",
-    "customer": "3",
+    "customer": "o7wt2ahucha5mjdgj83e913j",
     "amount": 45
   },
   {

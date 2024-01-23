@@ -1,5 +1,5 @@
-import { ClassType, Remult, remult, repo } from 'remult'
-import { getRelationInfo } from 'remult/internals'
+import { ClassType, Remult, remult, repo, Filter } from 'remult'
+import { getRelationFieldInfo } from 'remult/internals'
 
 export default function remultAdminHtml(options: AdminOptions) {
   let optionsFromServer = { ...options }
@@ -22,16 +22,31 @@ export function buildEntityInfo(options: AdminOptions) {
       if (!x.includedInApi(undefined)) continue
       let relation: FieldRelationToOneInfo | undefined
       let valFieldKey = x.key
-      const info = getRelationInfo(x.options)
+      const info = getRelationFieldInfo(x)
       if (info) {
-        const relRepo = repo(info.toType())
+        const relInfo = info.getFields()
+        const relRepo = repo(info.toEntity)
+        const where =
+          typeof info.options.findOptions === 'object' &&
+          info.options.findOptions.where
+            ? Filter.entityFilterToJson(
+                relRepo.metadata,
+                info.options.findOptions.where
+              )
+            : undefined
         const idField = relRepo.metadata.idMetadata.field.key
         if (info.type === 'reference' || info.type === 'toOne') {
           if (info.type == 'toOne') {
-            //@ts-ignore
-            valFieldKey = x.options['field']
+            for (const key in relInfo.fields) {
+              if (Object.prototype.hasOwnProperty.call(relInfo.fields, key)) {
+                const element = relInfo.fields[key]
+                valFieldKey = element
+              }
+            }
           }
           relation = {
+            ...relInfo,
+            where,
             entityKey: relRepo.metadata.key,
             idField,
             captionField: relRepo.metadata.fields
@@ -40,9 +55,9 @@ export function buildEntityInfo(options: AdminOptions) {
           }
         } else if (info.type === 'toMany') {
           relations.push({
+            ...relInfo,
+            where,
             entityKey: relRepo.metadata.key,
-            //@ts-ignore
-            fieldOnOtherEntity: x.options['field'],
           })
           continue
         }

@@ -27,6 +27,17 @@ export function EditableRow({
   const [relation, setRelation] = useState<EntityRelationToManyInfo | false>(
     false
   )
+  const relationWhere = useMemo(() => {
+    const result: any = {}
+    if (typeof relation === 'object')
+      for (const key in relation.fields) {
+        if (Object.prototype.hasOwnProperty.call(relation.fields, key)) {
+          const element = relation.fields[key]
+          result[key] = row[element]
+        }
+      }
+    return result
+  }, [relation, row])
   const relationTable = useMemo(
     () =>
       typeof relation === 'object' &&
@@ -183,6 +194,7 @@ export function EditableRow({
           <td colSpan={columns.length + 1}>
             {relations.map((r) => (
               <a
+                key={r.entityKey}
                 className={'tab ' + (r === relation ? 'active' : '')}
                 href=""
                 onClick={(e) => {
@@ -199,11 +211,10 @@ export function EditableRow({
                 god={god}
                 relations={relationTable.relations}
                 repo={relationTable.repo}
-                parentRelation={{
-                  [relation!.fieldOnOtherEntity]: rowId,
-                }}
+                parentRelation={relationWhere}
               />
             )}
+            {JSON.stringify(relationWhere)}
           </td>
         </tr>
       )}

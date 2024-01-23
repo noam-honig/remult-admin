@@ -1,4 +1,5 @@
 import { ClassType } from 'remult'
+import { RelationFieldInfo, RelationFields } from 'remult/internals'
 
 export interface EntityUIInfo {
   key: string
@@ -6,9 +7,9 @@ export interface EntityUIInfo {
   fields: FieldUIInfo[]
   relations: EntityRelationToManyInfo[]
 }
-export interface EntityRelationToManyInfo {
+export interface EntityRelationToManyInfo extends RelationFields {
   entityKey: string
-  fieldOnOtherEntity: string
+  where?: any
 }
 
 export interface FieldUIInfo {
@@ -18,10 +19,11 @@ export interface FieldUIInfo {
   type: 'json' | 'string' | 'number' | 'boolean'
   relationToOne?: FieldRelationToOneInfo
 }
-export interface FieldRelationToOneInfo {
+export interface FieldRelationToOneInfo extends RelationFields {
   entityKey: string
   idField: string
   captionField: string
+  where?: any
 }
 export interface AdminOptions extends DisplayOptions {
   entities: ClassType<any>[]

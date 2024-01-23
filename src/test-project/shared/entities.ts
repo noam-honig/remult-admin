@@ -21,9 +21,10 @@ export class Customer {
 export class Order {
   @Fields.cuid()
   id = ''
-
-  @Relations.toOne(() => Customer)
+  @Fields.string()
   customer = ''
+  @Relations.toOne(() => Customer, 'customer')
+  customerEntity = ''
   @Fields.number()
   amount = 0
   @Fields.json()

@@ -85,9 +85,11 @@ export default App
 //[V] - doesn't update well
 //[V] - live refresh doesn't work
 //[V] - update id doesn't work
+//[ ] - support where on relations (select from table of tables etc....)
 //[ ] - store erd positions
 //[ ] - support more complex relations
 //[ ] - support compound id for admin and erd
+//[ ] - support id column
 //[ ] - add loading indication
 
 //[ ] - serialize find options to uri

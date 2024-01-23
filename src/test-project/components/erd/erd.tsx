@@ -95,42 +95,38 @@ export function Erd({ god }: { god: God }) {
     const edges: Edge[] = []
     setNodes(nodes)
     for (const entity of god.tables) {
+      function createEdge(
+        toEntity: string,
+        relationFields: Record<string, string>
+      ) {
+        const target = god.tables.find((x) => x.key === toEntity)
+
+        if (target) {
+          const sourceNode = nodes.find((x) => x.id === entity.key)!
+          const targetNode = nodes.find((x) => x.id === target.key)!
+          for (const key in relationFields) {
+            if (Object.prototype.hasOwnProperty.call(relationFields, key)) {
+              const element = relationFields[key]
+              edges.push({
+                id: `${entity.key}-${element}-to-one`,
+                source: sourceNode.id,
+                target: targetNode.id,
+                ...returnHandles(sourceNode, targetNode, element, key),
+              })
+            }
+          }
+        }
+      }
       for (const field of entity.fields) {
         if (field.relationToOne) {
-          const target = god.tables.find(
-            (x) => x.key === field.relationToOne?.entityKey
-          )
-
-          if (target) {
-            const sourceNode = nodes.find((x) => x.id === entity.key)!
-            const targetNode = nodes.find((x) => x.id === target.key)!
-            edges.push({
-              id: `${entity.key}-${field.key}-to-one`,
-              source: sourceNode.id,
-              target: targetNode.id,
-              ...returnHandles(sourceNode, targetNode, field.key, 'id'),
-            })
-          }
+          createEdge(field.relationToOne?.entityKey, field.relationToOne.fields)
         }
       }
       for (const relation of entity.relations) {
         const target = god.tables.find((x) => x.key === relation.entityKey)
 
         if (target) {
-          const sourceNode = nodes.find((x) => x.id === entity.key)!
-          const targetNode = nodes.find((x) => x.id === target.key)!
-          if (relation.fieldOnOtherEntity)
-            edges.push({
-              id: `${entity.key}-${relation.entityKey}-to-many`,
-              source: sourceNode.id,
-              target: targetNode.id,
-              ...returnHandles(
-                sourceNode,
-                targetNode,
-                'id',
-                relation.fieldOnOtherEntity
-              ),
-            })
+          createEdge(relation.entityKey, relation.fields)
         }
       }
     }
